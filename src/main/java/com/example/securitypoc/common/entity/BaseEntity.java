@@ -1,6 +1,6 @@
 package com.example.securitypoc.common.entity;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
