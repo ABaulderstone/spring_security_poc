@@ -29,6 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
+
             if (jwt != null && jwtUtils.validateJwt(jwt)) {
                 Long id = jwtUtils.getUserIdFromJwt(jwt);
                 UserDetails userDetails = userDetailsService.loadById(id);
@@ -36,6 +37,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                         userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
             }
         } catch (Exception e) {
             System.out.println("Cannot set auth " + e.getMessage());
