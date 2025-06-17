@@ -28,6 +28,8 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     public String generateJwt(Authentication authentication) {
+        System.out.println("HEREEEE");
+        System.out.println(authentication.getPrincipal());
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User user = userDetails.getUser();
         return Jwts.builder()

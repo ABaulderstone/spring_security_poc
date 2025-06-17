@@ -68,7 +68,7 @@ public class WebSecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigSource))
                 .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/csrf/csrf-token"))
+                        .ignoringRequestMatchers("/csrf/csrf-token", "/auth/**"))
                 .exceptionHandling(eh -> eh.authenticationEntryPoint(unauthorizedHandler)
                         .accessDeniedHandler(new ForbiddenHandler()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

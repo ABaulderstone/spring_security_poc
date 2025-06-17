@@ -28,12 +28,12 @@ public class DevDataSeeder implements CommandLineRunner {
         System.out.println("🌱 Running DevDataSeeder...");
         if (userRepo.findByEmail("admin@test.com").isEmpty()) {
             User admin = new User();
-            admin.setEmail("admin@example.com");
+            admin.setEmail("admin@test.com");
             admin.setRole(Role.ADMIN);
             admin.setPassword(passwordEncoder.encode("admin123"));
 
             User student = new User();
-            student.setEmail("student@example.com");
+            student.setEmail("student@test.com");
             student.setRole(Role.STUDENT);
             student.setPassword(passwordEncoder.encode("student123"));
 
