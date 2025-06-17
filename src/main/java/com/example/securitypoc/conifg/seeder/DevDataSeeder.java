@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.example.securitypoc.auth.Role;
 import com.example.securitypoc.user.UserRepository;
 import com.example.securitypoc.user.entities.User;
 
+@Component()
 @Profile("dev")
 public class DevDataSeeder implements CommandLineRunner {
 
@@ -23,6 +25,7 @@ public class DevDataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("🌱 Running DevDataSeeder...");
         if (userRepo.findByEmail("admin@test.com").isEmpty()) {
             User admin = new User();
             admin.setEmail("admin@example.com");
