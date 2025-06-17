@@ -26,7 +26,8 @@ public class AuthController {
         String jwt = this.authService.login(data);
         Cookie jwtCookie = new Cookie("jwt", jwt);
         jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(true);
+        // TODO: Only set to false in dev
+        jwtCookie.setSecure(false);
         jwtCookie.setPath("/");
         jwtCookie.setMaxAge(24 * 60 * 60);
         response.addCookie(jwtCookie);

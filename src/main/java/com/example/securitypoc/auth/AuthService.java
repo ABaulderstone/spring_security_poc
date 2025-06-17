@@ -29,6 +29,7 @@ public class AuthService {
         Authentication authentication = this.authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = this.jwtUtils.generateJwt(authentication);
+        System.out.println(userDetails.getUsername());
         return jwt;
 
     }
