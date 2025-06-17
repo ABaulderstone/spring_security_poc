@@ -71,7 +71,7 @@ public class WebSecurityConfig {
                         .ignoringRequestMatchers("/csrf/csrf-token", "/auth/**"))
                 .exceptionHandling(eh -> eh.authenticationEntryPoint(unauthorizedHandler)
                         .accessDeniedHandler(new ForbiddenHandler()))
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auths -> auths.requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/csrf/csrf-token").authenticated()
