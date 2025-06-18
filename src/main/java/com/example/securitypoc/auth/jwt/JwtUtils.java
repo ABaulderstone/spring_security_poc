@@ -1,4 +1,4 @@
-package com.example.securitypoc.auth;
+package com.example.securitypoc.auth.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.example.securitypoc.auth.UserDetailsImpl;
 import com.example.securitypoc.user.entities.User;
 
 import io.jsonwebtoken.Claims;

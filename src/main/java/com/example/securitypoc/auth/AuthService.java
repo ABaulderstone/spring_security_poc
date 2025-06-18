@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.example.securitypoc.auth.dtos.LoginDto;
+import com.example.securitypoc.auth.jwt.JwtUtils;
 
 @Service
 public class AuthService {

@@ -2,7 +2,7 @@ package com.example.securitypoc.user.entities;
 
 import java.time.LocalTime;
 
-import com.example.securitypoc.auth.Role;
+import com.example.securitypoc.auth.role.Role;
 import com.example.securitypoc.common.entity.BaseEntity;
 import com.example.securitypoc.common.entity.traits.Timestampable;
 

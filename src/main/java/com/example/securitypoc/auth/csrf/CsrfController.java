@@ -1,4 +1,4 @@
-package com.example.securitypoc.auth;
+package com.example.securitypoc.auth.csrf;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

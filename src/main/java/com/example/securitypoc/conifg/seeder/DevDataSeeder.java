@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.example.securitypoc.auth.Role;
+import com.example.securitypoc.auth.role.Role;
 import com.example.securitypoc.user.UserRepository;
 import com.example.securitypoc.user.entities.User;
 

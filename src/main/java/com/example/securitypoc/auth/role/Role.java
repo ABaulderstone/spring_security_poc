@@ -1,4 +1,4 @@
-package com.example.securitypoc.auth;
+package com.example.securitypoc.auth.role;
 
 public enum Role {
     ADMIN,
