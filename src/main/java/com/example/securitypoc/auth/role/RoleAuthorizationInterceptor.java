@@ -32,7 +32,7 @@ public class RoleAuthorizationInterceptor implements HandlerInterceptor {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
-            return false;
+            throw new AuthenticationException();
         }
 
         Set<String> authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
@@ -45,7 +45,7 @@ public class RoleAuthorizationInterceptor implements HandlerInterceptor {
             }
         }
 
-        return false;
+        throw new AccessDeniedException("Your role does not have permission to do this");
 
     }
 }
