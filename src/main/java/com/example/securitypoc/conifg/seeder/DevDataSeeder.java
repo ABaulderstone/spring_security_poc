@@ -32,12 +32,22 @@ public class DevDataSeeder implements CommandLineRunner {
             admin.setRole(Role.ADMIN);
             admin.setPassword(passwordEncoder.encode("admin123"));
 
+            User coach = new User();
+            coach.setEmail("coach@test.com");
+            coach.setRole(Role.COACH);
+            coach.setPassword(passwordEncoder.encode("coach123"));
+
             User student = new User();
             student.setEmail("student@test.com");
             student.setRole(Role.STUDENT);
             student.setPassword(passwordEncoder.encode("student123"));
 
-            userRepo.saveAll(List.of(admin, student));
+            User candidate = new User();
+            candidate.setEmail("candidate@test.com");
+            candidate.setRole(Role.CANDIDTATE);
+            candidate.setPassword(passwordEncoder.encode("candidate123"));
+
+            userRepo.saveAll(List.of(admin, student, coach, candidate));
         }
     }
 

@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException.Unauthorized;
+
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -38,7 +38,8 @@ public class RoleAuthorizationInterceptor implements HandlerInterceptor {
         Set<String> authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        for (String allowedRole : allowedRoles.value()) {
+        Role[] roles = allowedRoles.value();
+        for (Role allowedRole : roles) {
             if (authorities.contains("ROLE_" + allowedRole)) {
                 return true;
             }
