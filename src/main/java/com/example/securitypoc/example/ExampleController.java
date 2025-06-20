@@ -27,8 +27,14 @@ public class ExampleController {
 
     @AllowedRoles({ Role.ADMIN })
     @GetMapping("/admin-only")
-    public String getMethodName(@RequestParam String param) {
+    public String adminRoute() {
         return "Only an admin can see this";
+    }
+
+    @AllowedRoles({ Role.ADMIN, Role.COACH })
+    @GetMapping("/coach-admin")
+    public String coachAdmin() {
+        return "Restricted to Admin and Coach";
     }
 
 }
