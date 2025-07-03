@@ -25,12 +25,11 @@ public class AuthService {
 
     public String login(LoginDto data) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(data.getEmail());
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(data.getEmail(),
-                data.getPassword());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                data.getPassword(), userDetails.getAuthorities());
         Authentication authentication = this.authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = this.jwtUtils.generateJwt(authentication);
-        System.out.println(userDetails.getUsername());
         return jwt;
 
     }
