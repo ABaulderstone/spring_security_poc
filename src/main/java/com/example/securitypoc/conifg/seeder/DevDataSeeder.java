@@ -8,47 +8,53 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.securitypoc.auth.role.Role;
+import com.example.securitypoc.conifg.factory.user.UserFactory;
+import com.example.securitypoc.conifg.factory.user.UserFactoryOptions;
 import com.example.securitypoc.user.UserRepository;
 import com.example.securitypoc.user.entities.User;
 
 @Component()
 @Profile("dev")
 public class DevDataSeeder implements CommandLineRunner {
+    private final UserFactory userFactory;
 
-    private final UserRepository userRepo;
-    private final PasswordEncoder passwordEncoder;
-
-    public DevDataSeeder(UserRepository userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
+    public DevDataSeeder(UserFactory userFactory) {
+        this.userFactory = userFactory;
     }
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println("🌱 Running DevDataSeeder...");
-        if (userRepo.findByEmail("admin@test.com").isEmpty()) {
-            User admin = new User();
-            admin.setEmail("admin@test.com");
-            admin.setRole(Role.ADMIN);
-            admin.setPassword(passwordEncoder.encode("admin123"));
+        if (userFactory.repoEmpty()) {
+            userFactory.createAndPersist(
+                    new UserFactoryOptions()
+                            .role(Role.ADMIN)
+                            .email("admin@test.com")
+                            .rawPassword("admin123"));
 
-            User coach = new User();
-            coach.setEmail("coach@test.com");
-            coach.setRole(Role.COACH);
-            coach.setPassword(passwordEncoder.encode("coach123"));
+            userFactory.createAndPersist(
+                    new UserFactoryOptions()
+                            .role(Role.COACH)
+                            .email("coach1@test.com")
+                            .rawPassword("coach123"));
 
-            User student = new User();
-            student.setEmail("student@test.com");
-            student.setRole(Role.STUDENT);
-            student.setPassword(passwordEncoder.encode("student123"));
+            userFactory.createAndPersist(
+                    new UserFactoryOptions()
+                            .role(Role.COACH)
+                            .email("coach2@test.com")
+                            .rawPassword("coach123"));
 
-            User candidate = new User();
-            candidate.setEmail("candidate@test.com");
-            candidate.setRole(Role.CANDIDTATE);
-            candidate.setPassword(passwordEncoder.encode("candidate123"));
+            userFactory.createAndPersist(
+                    new UserFactoryOptions()
+                            .role(Role.TALENT)
+                            .email("talent@test.com")
+                            .rawPassword("talent123"));
 
-            userRepo.saveAll(List.of(admin, student, coach, candidate));
+            for (int i = 0; i < 10; i++) {
+                userFactory.createAndPersist(new UserFactoryOptions().role(Role.STUDENT));
+            }
         }
+
     }
 
 }
