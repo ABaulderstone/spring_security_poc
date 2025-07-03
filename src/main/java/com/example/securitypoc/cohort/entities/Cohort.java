@@ -1,8 +1,8 @@
-package com.example.securitypoc.user.entities;
+package com.example.securitypoc.cohort.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.example.securitypoc.auth.role.Role;
 import com.example.securitypoc.common.TimeStampEntityListener;
 import com.example.securitypoc.common.entity.BaseEntity;
 import com.example.securitypoc.common.entity.traits.Timestampable;
@@ -12,29 +12,15 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(name = "cohorts")
 @EntityListeners(TimeStampEntityListener.class)
-public class User extends BaseEntity implements Timestampable {
+public class Cohort extends BaseEntity implements Timestampable {
+    private String name;
+    private LocalDate startDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String email;
-    private String password;
-    private Role role;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public Cohort() {
     }
 
     public LocalDateTime getCreatedAt() {
@@ -53,12 +39,20 @@ public class User extends BaseEntity implements Timestampable {
         this.updatedAt = updatedAt;
     }
 
-    public Role getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
 }

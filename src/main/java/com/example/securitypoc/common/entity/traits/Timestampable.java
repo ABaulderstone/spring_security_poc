@@ -1,29 +1,14 @@
 package com.example.securitypoc.common.entity.traits;
 
-import java.time.LocalTime;
-
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import java.time.LocalDateTime;
 
 public interface Timestampable {
-    public LocalTime getCreatedAt();
+    public LocalDateTime getCreatedAt();
 
-    public void setCreatedAt(LocalTime timestamp);
+    public void setCreatedAt(LocalDateTime timestamp);
 
-    public LocalTime getUpdatedAt();
+    public LocalDateTime getUpdatedAt();
 
-    public void setUpdatedAt(LocalTime timestamp);
-
-    @PrePersist
-    default void onCreate() {
-        LocalTime timestamp = LocalTime.now();
-        setCreatedAt(timestamp);
-        setUpdatedAt(timestamp);
-    }
-
-    @PreUpdate
-    default void onUpdate() {
-        setUpdatedAt(LocalTime.now());
-    }
+    public void setUpdatedAt(LocalDateTime timestamp);
 
 }
