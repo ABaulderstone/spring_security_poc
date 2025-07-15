@@ -28,4 +28,5 @@ public abstract class BaseFactory {
     }
 
     public abstract boolean repoEmpty();
+
 }

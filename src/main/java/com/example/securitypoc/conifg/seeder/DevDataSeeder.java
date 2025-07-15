@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.securitypoc.auth.role.Role;
+import com.example.securitypoc.conifg.factory.cohort.CohortFactory;
 import com.example.securitypoc.conifg.factory.user.UserFactory;
 import com.example.securitypoc.conifg.factory.user.UserFactoryOptions;
 import com.example.securitypoc.user.UserRepository;
@@ -17,9 +18,11 @@ import com.example.securitypoc.user.entities.User;
 @Profile("dev")
 public class DevDataSeeder implements CommandLineRunner {
     private final UserFactory userFactory;
+    private final CohortFactory cohortFactory;
 
-    public DevDataSeeder(UserFactory userFactory) {
+    public DevDataSeeder(UserFactory userFactory, CohortFactory cohortFactory) {
         this.userFactory = userFactory;
+        this.cohortFactory = cohortFactory;
     }
 
     @Override
@@ -50,9 +53,13 @@ public class DevDataSeeder implements CommandLineRunner {
                             .email("talent@test.com")
                             .rawPassword("talent123"));
 
-            for (int i = 0; i < 10; i++) {
-                userFactory.createAndPersist(new UserFactoryOptions().role(Role.STUDENT));
+            for (int i = 0; i < 5; i++) {
+                var cohort = cohortFactory.create();
+                for (int j = 0; j < 10; j++) {
+                    userFactory.createAndPersist(new UserFactoryOptions().role(Role.STUDENT));
+                }
             }
+
         }
 
     }
