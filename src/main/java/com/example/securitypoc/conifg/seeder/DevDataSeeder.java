@@ -9,20 +9,21 @@ import org.springframework.stereotype.Component;
 
 import com.example.securitypoc.auth.role.Role;
 import com.example.securitypoc.conifg.factory.cohort.CohortFactory;
+import com.example.securitypoc.conifg.factory.enrollment.EnrollentFactory;
 import com.example.securitypoc.conifg.factory.user.UserFactory;
 import com.example.securitypoc.conifg.factory.user.UserFactoryOptions;
-import com.example.securitypoc.user.UserRepository;
-import com.example.securitypoc.user.entities.User;
 
 @Component()
 @Profile("dev")
 public class DevDataSeeder implements CommandLineRunner {
     private final UserFactory userFactory;
     private final CohortFactory cohortFactory;
+    private final EnrollentFactory enrollentFactory;
 
-    public DevDataSeeder(UserFactory userFactory, CohortFactory cohortFactory) {
+    public DevDataSeeder(UserFactory userFactory, CohortFactory cohortFactory, EnrollentFactory enrollentFactory) {
         this.userFactory = userFactory;
         this.cohortFactory = cohortFactory;
+        this.enrollentFactory = enrollentFactory;
     }
 
     @Override
@@ -52,14 +53,18 @@ public class DevDataSeeder implements CommandLineRunner {
                             .role(Role.TALENT)
                             .email("talent@test.com")
                             .rawPassword("talent123"));
+        }
 
+        if (enrollentFactory.repoEmpty()) {
             for (int i = 0; i < 5; i++) {
-                var cohort = cohortFactory.create();
+                var cohort = cohortFactory.createAndPersist();
+                var coach = userFactory.createAndPersist(new UserFactoryOptions().role(Role.COACH));
+                enrollentFactory.createAndPersist(coach, cohort);
                 for (int j = 0; j < 10; j++) {
-                    userFactory.createAndPersist(new UserFactoryOptions().role(Role.STUDENT));
+                    var student = userFactory.createAndPersist(new UserFactoryOptions().role(Role.STUDENT));
+                    enrollentFactory.createAndPersist(student, cohort);
                 }
             }
-
         }
 
     }

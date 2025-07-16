@@ -1,13 +1,16 @@
 package com.example.securitypoc.conifg.factory.cohort;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import com.example.securitypoc.cohort.CohortRepository;
 import com.example.securitypoc.cohort.entities.Cohort;
 import com.example.securitypoc.conifg.factory.BaseFactory;
 
+@Component
+@Profile({ "dev", "test" })
 public class CohortFactory extends BaseFactory {
     private final CohortRepository cohortRepo;
 
