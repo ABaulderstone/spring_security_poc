@@ -28,7 +28,6 @@ public class DevDataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("🌱 Running DevDataSeeder...");
         if (userFactory.repoEmpty()) {
             userFactory.createAndPersist(
                     new UserFactoryOptions()
