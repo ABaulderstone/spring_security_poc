@@ -27,7 +27,8 @@ public class CohortAccessHandler {
             case ADMIN, TALENT, COACH:
                 return cohortRepository.findAll();
             case STUDENT:
-                return enrollmentRepository.findActiveByUser(currentUser).map(e -> List.of(e.getCohort()))
+                return enrollmentRepository.findActiveCohortByUser(currentUser.getId())
+                        .map(c -> List.of(c))
                         .orElse(List.of());
             default:
                 return List.of();

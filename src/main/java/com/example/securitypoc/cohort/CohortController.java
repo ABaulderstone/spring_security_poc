@@ -21,6 +21,7 @@ public class CohortController {
 
     @GetMapping()
     public ResponseEntity<List<Cohort>> findAll() {
+
         var cohorts = this.cohortService.findAll();
         return ResponseEntity.ok(cohorts);
     }
