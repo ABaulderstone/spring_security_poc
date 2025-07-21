@@ -1,6 +1,7 @@
 package com.example.securitypoc.cohort;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,10 @@ public class CohortService {
 
     public List<Cohort> findAll() {
         return accessHandler.visibleCohorts();
+    }
+
+    public Optional<Cohort> findById(Long id) {
+        return this.accessHandler.visibleCohort(id);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.securitypoc.cohort;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
@@ -12,13 +13,10 @@ import com.example.securitypoc.user.entities.User;
 public class CohortAccessHandler {
     private final CurrentUserService currentUserService;
     private final CohortRepository cohortRepository;
-    private final EnrollmentRepository enrollmentRepository;
 
-    public CohortAccessHandler(CurrentUserService currentUserService, CohortRepository cohortRepository,
-            EnrollmentRepository enrollmentRepository) {
+    public CohortAccessHandler(CurrentUserService currentUserService, CohortRepository cohortRepository) {
         this.currentUserService = currentUserService;
         this.cohortRepository = cohortRepository;
-        this.enrollmentRepository = enrollmentRepository;
     }
 
     public List<Cohort> visibleCohorts() {
@@ -27,11 +25,23 @@ public class CohortAccessHandler {
             case ADMIN, TALENT, COACH:
                 return cohortRepository.findAll();
             case STUDENT:
-                return enrollmentRepository.findActiveCohortByUser(currentUser.getId())
+                return cohortRepository.findActiveCohortByUser(currentUser.getId())
                         .map(c -> List.of(c))
                         .orElse(List.of());
             default:
                 return List.of();
+        }
+    }
+
+    public Optional<Cohort> visibleCohort(Long cohortId) {
+        User currentUser = currentUserService.getUserEntity();
+        switch (currentUser.getRole()) {
+            case ADMIN, TALENT, COACH:
+                return cohortRepository.findById(cohortId);
+            case STUDENT:
+                return cohortRepository.findByIdAndUserEnrolled(cohortId, currentUser.getId());
+            default:
+                return Optional.empty();
         }
     }
 
