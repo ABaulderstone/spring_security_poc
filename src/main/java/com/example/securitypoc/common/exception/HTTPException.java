@@ -8,13 +8,14 @@ public class HTTPException extends RuntimeException {
     private final ServiceError serviceError;
 
     public HTTPException(HttpStatus httpStatus, String errorType, ServiceError serviceError) {
-        super(errorType);
+        super(serviceError != null ? serviceError.getMessage() : errorType);
         this.httpStatus = httpStatus;
         this.errorType = errorType;
         this.serviceError = serviceError;
     }
 
     public HTTPException(HttpStatus httpStatus, String errorType) {
+
         this(httpStatus, errorType, null);
     }
 

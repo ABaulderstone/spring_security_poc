@@ -16,7 +16,6 @@ public class NotFoundError implements ServiceError {
 
     @Override
     public String getMessage() {
-
         return String.format("%s with id '%s' not found", entityName, id);
     }
 
