@@ -19,4 +19,12 @@ public class NotFoundError implements ServiceError {
         return String.format("%s with id '%s' not found", entityName, id);
     }
 
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
 }

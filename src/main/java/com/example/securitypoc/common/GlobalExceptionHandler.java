@@ -11,7 +11,7 @@ import com.example.securitypoc.common.exception.HTTPException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(HTTPException.class)
     public ResponseEntity<HttpExceptionResponse> handleHttpException(HTTPException ex) {
-        HttpExceptionResponse response = new HttpExceptionResponse(ex.getErrorType(), ex.getMessage(),
+        HttpExceptionResponse response = new HttpExceptionResponse(ex.getHttpStatus().toString(), ex.getMessage(),
                 ex.getHttpStatus().value(), ex.getServiceError());
         return new ResponseEntity<HttpExceptionResponse>(response, ex.getHttpStatus());
     }

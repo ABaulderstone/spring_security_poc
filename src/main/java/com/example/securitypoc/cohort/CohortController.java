@@ -36,7 +36,7 @@ public class CohortController {
         Optional<Cohort> result = this.cohortService.findById(id);
         if (result.isEmpty()) {
             NotFoundError err = new NotFoundError("Cohort", id);
-            throw new HTTPException(HttpStatus.NOT_FOUND, "NOT_FOUND", err);
+            throw new HTTPException(HttpStatus.NOT_FOUND, err);
         }
         Cohort foundCohort = result.get();
         return ResponseEntity.ok(foundCohort);

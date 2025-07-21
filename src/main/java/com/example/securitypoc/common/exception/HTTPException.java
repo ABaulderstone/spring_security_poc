@@ -4,27 +4,21 @@ import org.springframework.http.HttpStatus;
 
 public class HTTPException extends RuntimeException {
     private final HttpStatus httpStatus;
-    private final String errorType;
     private final ServiceError serviceError;
 
-    public HTTPException(HttpStatus httpStatus, String errorType, ServiceError serviceError) {
-        super(serviceError != null ? serviceError.getMessage() : errorType);
+    public HTTPException(HttpStatus httpStatus, ServiceError serviceError) {
+        super(serviceError != null ? serviceError.getMessage() : httpStatus.toString());
         this.httpStatus = httpStatus;
-        this.errorType = errorType;
+
         this.serviceError = serviceError;
     }
 
-    public HTTPException(HttpStatus httpStatus, String errorType) {
-
-        this(httpStatus, errorType, null);
+    public HTTPException(HttpStatus httpStatus) {
+        this(httpStatus, null);
     }
 
     public HttpStatus getHttpStatus() {
         return httpStatus;
-    }
-
-    public String getErrorType() {
-        return errorType;
     }
 
     public ServiceError getServiceError() {
