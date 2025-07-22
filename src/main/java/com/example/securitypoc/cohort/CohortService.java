@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.securitypoc.cohort.entities.Cohort;
+import com.example.securitypoc.common.Either;
+import com.example.securitypoc.common.exception.NotFoundError;
+import com.example.securitypoc.common.exception.ServiceError;
 
 @Service
 public class CohortService {
@@ -20,8 +23,13 @@ public class CohortService {
         return accessHandler.visibleCohorts();
     }
 
-    public Optional<Cohort> findById(Long id) {
-        return this.accessHandler.visibleCohort(id);
+    public Either<ServiceError, Cohort> findById(Long id) {
+        Optional<Cohort> result = this.accessHandler.visibleCohort(id);
+        if (result.isEmpty()) {
+            NotFoundError err = new NotFoundError("Cohort", id);
+            return Either.left(err);
+        }
+        return Either.right(result.get());
     }
 
 }
