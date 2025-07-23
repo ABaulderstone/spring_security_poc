@@ -61,7 +61,7 @@ export class HttpClient {
     });
 
     if (res.status === 401) {
-      this.unauthorizedHandler;
+      this.unauthorizedHandler();
       throw new HttpError(401, 'Unauthorized');
     }
 
