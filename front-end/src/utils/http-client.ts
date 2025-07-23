@@ -73,7 +73,21 @@ export class HttpClient {
     return res.json() as T;
   }
 
-  public get<T>(url: string, options?: FetchOptions) {
-    return this.doFetch<T>(url, { ...options, method: 'GET' });
+  public get<T>(endpoint: string, options?: FetchOptions) {
+    return this.doFetch<T>(endpoint, { ...options, method: 'GET' });
+  }
+
+  public post<T>(endpoint: string, body: unknown, options?: FetchOptions) {
+    const isFormData = body instanceof FormData;
+    return this.doFetch<T>(
+      endpoint,
+      {
+        ...options,
+        method: 'POST',
+        body: isFormData ? body : JSON.stringify(body),
+      },
+      true,
+      isFormData
+    );
   }
 }
