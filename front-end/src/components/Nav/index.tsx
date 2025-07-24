@@ -1,8 +1,10 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../../context/auth/use-auth';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const { loggedInUser: user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const getNavLinks = () => {
     if (!user) return [{ label: 'Login', to: '/login' }];
@@ -23,6 +25,16 @@ const Navbar = () => {
 
   const navLinks = getNavLinks();
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Succesfully logged out');
+      navigate('/login');
+    } catch (e) {
+      toast.warn('failed to logout');
+    }
+  };
+
   return (
     <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -41,7 +53,7 @@ const Navbar = () => {
           ))}
           {user && (
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="text-indigo-600 hover:text-indigo-800 font-medium"
             >
               Logout

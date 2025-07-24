@@ -60,6 +60,10 @@ export class HttpClient {
       headers,
     });
 
+    const contentType = res.headers.get('Content-Type');
+    const isJsonResponse = contentType?.includes('application/json');
+    const hasBody = res.status !== 204 && isJsonResponse;
+
     if (res.status === 401) {
       this.unauthorizedHandler();
       throw new HttpError(401, 'Unauthorized');
@@ -70,7 +74,7 @@ export class HttpClient {
       throw new HttpError(res.status, errBody.message || 'Fetch error');
     }
 
-    return res.json() as T;
+    return hasBody ? (res.json() as T) : (undefined as unknown as T);
   }
 
   public get<T>(endpoint: string, options?: FetchOptions) {
