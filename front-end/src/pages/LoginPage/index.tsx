@@ -27,7 +27,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4">
+    <div className="w-full max-w-sm">
       <Paper className="w-full max-w-md space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
           Login
