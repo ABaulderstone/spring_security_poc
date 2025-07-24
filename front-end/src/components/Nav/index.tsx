@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { useAuth } from '../../context/auth/use-auth';
 
 const Navbar = () => {
-  const { loggedInUser: user } = useAuth();
+  const { loggedInUser: user, logout } = useAuth();
 
   const getNavLinks = () => {
     if (!user) return [{ label: 'Login', to: '/login' }];
@@ -40,7 +40,10 @@ const Navbar = () => {
             </Link>
           ))}
           {user && (
-            <button className="text-indigo-600 hover:text-indigo-800 font-medium">
+            <button
+              onClick={logout}
+              className="text-indigo-600 hover:text-indigo-800 font-medium"
+            >
               Logout
             </button>
           )}

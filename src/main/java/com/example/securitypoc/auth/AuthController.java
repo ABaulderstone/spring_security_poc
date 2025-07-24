@@ -43,7 +43,19 @@ public class AuthController {
         User loggedInUser = this.currentUserService.getUserEntity();
         SimpleUserResponseDTO userResponse = mapper.map(loggedInUser, SimpleUserResponseDTO.class);
         return ResponseEntity.ok(userResponse);
+    }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setHttpOnly(true);
+        // TODO: Only set to false in dev
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        // expires and deletes immediately
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return ResponseEntity.noContent().build();
     }
 
 }

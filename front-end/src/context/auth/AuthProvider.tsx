@@ -11,6 +11,7 @@ interface DefaultAuthContextValues {
   loggedInUser: SimpleUserResponse | null;
   httpClient: HttpClient | null;
   login: (email: string, password: string) => void;
+  logout: () => void;
 }
 
 interface AuthContextProviderProps {
@@ -20,6 +21,7 @@ export const AuthContext = createContext<DefaultAuthContextValues>({
   loggedInUser: null,
   httpClient: null,
   login: (a, b) => console.log(a + b),
+  logout: () => console.log('logged out'),
 });
 
 export default function AuthProvider({ children }: AuthContextProviderProps) {
@@ -49,8 +51,13 @@ export default function AuthProvider({ children }: AuthContextProviderProps) {
     setLoggedInUser(user);
   };
 
+  const logout = async () => {
+    await httpClient.post('/auth/logout', null);
+    setLoggedInUser(null);
+  };
+
   return (
-    <AuthContext value={{ loggedInUser, httpClient, login }}>
+    <AuthContext value={{ loggedInUser, httpClient, login, logout }}>
       {children}
     </AuthContext>
   );
