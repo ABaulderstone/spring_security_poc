@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, type ReactNode } from 'react';
-import { HttpClient } from '../utils/http-client';
+import { HttpClient } from '../../utils/http-client';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 interface SimpleUserResponse {
@@ -10,6 +10,7 @@ interface SimpleUserResponse {
 interface DefaultAuthContextValues {
   loggedInUser: SimpleUserResponse | null;
   httpClient: HttpClient | null;
+  login: (email: string, password: string) => void;
 }
 
 interface AuthContextProviderProps {
@@ -18,11 +19,10 @@ interface AuthContextProviderProps {
 export const AuthContext = createContext<DefaultAuthContextValues>({
   loggedInUser: null,
   httpClient: null,
+  login: (a, b) => console.log(a + b),
 });
 
-export default function AuthContextProvider({
-  children,
-}: AuthContextProviderProps) {
+export default function AuthProvider({ children }: AuthContextProviderProps) {
   const [loggedInUser, setLoggedInUser] = useState<SimpleUserResponse | null>(
     null
   );
@@ -39,7 +39,19 @@ export default function AuthContextProvider({
     httpClient.get<SimpleUserResponse>('/users/current').then(setLoggedInUser);
   }, []);
 
+  const login = async (email: string, password: string) => {
+    const user = await httpClient.post<SimpleUserResponse>(
+      '/auth/login',
+      { email, password },
+      undefined,
+      false
+    );
+    setLoggedInUser(user);
+  };
+
   return (
-    <AuthContext value={{ loggedInUser, httpClient }}>{children}</AuthContext>
+    <AuthContext value={{ loggedInUser, httpClient, login }}>
+      {children}
+    </AuthContext>
   );
 }

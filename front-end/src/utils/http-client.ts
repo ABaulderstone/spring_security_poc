@@ -77,7 +77,12 @@ export class HttpClient {
     return this.doFetch<T>(endpoint, { ...options, method: 'GET' });
   }
 
-  public post<T>(endpoint: string, body: unknown, options?: FetchOptions) {
+  public post<T>(
+    endpoint: string,
+    body: unknown,
+    options?: FetchOptions,
+    useCsrf = true
+  ) {
     const isFormData = body instanceof FormData;
     return this.doFetch<T>(
       endpoint,
@@ -86,7 +91,7 @@ export class HttpClient {
         method: 'POST',
         body: isFormData ? body : JSON.stringify(body),
       },
-      true,
+      useCsrf,
       isFormData
     );
   }
