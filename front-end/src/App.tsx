@@ -1,8 +1,10 @@
 import { ToastContainer } from 'react-toastify';
 import AuthProvider from './context/auth/AuthProvider';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router';
 import LoginPage from './pages/LoginPage';
 import Layout from './Layout';
+import PrivateRoute from './guards/PrivateRoute';
+import StudentCohortPage from './pages/student/StudentCohortPage';
 
 function App() {
   return (
@@ -12,6 +14,18 @@ function App() {
           <Routes>
             <Route path="/" element={<h1>Hello world</h1>} />
             <Route path="/login" element={<LoginPage />} />
+
+            {/* student routes */}
+            <Route
+              path="/students"
+              element={
+                <PrivateRoute allowedRoles={['STUDENT']}>
+                  <Outlet />
+                </PrivateRoute>
+              }
+            >
+              <Route path="cohort" element={<StudentCohortPage />} />
+            </Route>
           </Routes>
         </Layout>
         <ToastContainer position="bottom-right" />

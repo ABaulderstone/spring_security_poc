@@ -2,9 +2,11 @@ import { createContext, useEffect, useState, type ReactNode } from 'react';
 import { HttpClient } from '../../utils/http-client';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+
+export type UserRole = 'ADMIN' | 'TALENT' | 'COACH' | 'STUDENT' | 'CANDIDATE';
 interface SimpleUserResponse {
   id: number;
-  role: string;
+  role: UserRole;
   email: string;
 }
 interface DefaultAuthContextValues {

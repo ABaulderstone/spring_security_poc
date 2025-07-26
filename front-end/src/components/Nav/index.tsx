@@ -17,7 +17,7 @@ const Navbar = () => {
         { label: 'Create Cohort', to: '/cohorts/create' }
       );
     } else if (user.role === 'STUDENT') {
-      links.push({ label: 'My Cohort', to: '/my-cohort' });
+      links.push({ label: 'My Cohort', to: '/students/cohort' });
     }
 
     return links;
