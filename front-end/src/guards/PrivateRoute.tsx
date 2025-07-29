@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../context/auth/use-auth';
 import { toast } from 'react-toastify';
 import type { UserRole } from '../context/auth/AuthProvider';

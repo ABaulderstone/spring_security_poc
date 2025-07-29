@@ -24,7 +24,7 @@ public class Enrollment extends BaseEntity {
     @Column
     private LocalDate dateEnrolled;
     @Column
-    private boolean isActive;
+    private boolean active;
 
     public Enrollment() {
     }
@@ -54,11 +54,11 @@ public class Enrollment extends BaseEntity {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(boolean isActive) {
-        this.isActive = isActive;
+        this.active = isActive;
     }
 
 }

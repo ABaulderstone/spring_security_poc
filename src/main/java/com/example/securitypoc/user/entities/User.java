@@ -9,7 +9,8 @@ import com.example.securitypoc.common.entity.traits.Timestampable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +21,8 @@ public class User extends BaseEntity implements Timestampable {
     private LocalDateTime updatedAt;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public String getEmail() {

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.example.securitypoc.auth.CurrentUserService;
+import com.example.securitypoc.cohort.dtos.CohortResponse;
 import com.example.securitypoc.cohort.entities.Cohort;
 import com.example.securitypoc.user.entities.User;
 
@@ -19,14 +20,14 @@ public class CohortAccessHandler {
         this.cohortRepository = cohortRepository;
     }
 
-    public List<Cohort> visibleCohorts() {
+    public List<CohortResponse> visibleCohorts() {
         User currentUser = currentUserService.getUserEntity();
         switch (currentUser.getRole()) {
             case ADMIN, TALENT, COACH:
-                return cohortRepository.findAll();
+                return cohortRepository.findAllWithStudentCount().stream().map(c -> (CohortResponse) c).toList();
             case STUDENT:
                 return cohortRepository.findActiveCohortByUser(currentUser.getId())
-                        .map(c -> List.of(c))
+                        .map(c -> List.of((CohortResponse) c))
                         .orElse(List.of());
             default:
                 return List.of();

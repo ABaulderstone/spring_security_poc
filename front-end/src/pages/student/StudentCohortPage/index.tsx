@@ -17,9 +17,9 @@ export default function StudentCohortPage() {
     return null;
   }
   return (
-    <>
-      <h1>{cohort.name}</h1>
-      <h2>{cohort.startDate}</h2>
-    </>
+    <div className="flex flex-col justify-center items-center gap-4">
+      <h1 className="text-3xl">{cohort.name}</h1>
+      <h2 className="text-xl">{cohort.startDate}</h2>
+    </div>
   );
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.securitypoc.cohort.dtos.CohortResponse;
 import com.example.securitypoc.cohort.entities.Cohort;
 import com.example.securitypoc.common.Either;
 import com.example.securitypoc.common.exception.NotFoundError;
@@ -19,7 +20,7 @@ public class CohortService {
         this.accessHandler = accessHandler;
     }
 
-    public List<Cohort> findAll() {
+    public List<CohortResponse> findAll() {
         return accessHandler.visibleCohorts();
     }
 

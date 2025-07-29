@@ -3,6 +3,7 @@ package com.example.securitypoc.cohort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.securitypoc.cohort.dtos.CohortResponse;
 import com.example.securitypoc.cohort.entities.Cohort;
 import com.example.securitypoc.common.Either;
 import com.example.securitypoc.common.exception.HTTPException;
@@ -26,7 +27,7 @@ public class CohortController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Cohort>> findAll() {
+    public ResponseEntity<List<CohortResponse>> findAll() {
 
         var cohorts = this.cohortService.findAll();
         return ResponseEntity.ok(cohorts);
