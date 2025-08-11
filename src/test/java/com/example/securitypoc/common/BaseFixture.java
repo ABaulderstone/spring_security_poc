@@ -29,7 +29,6 @@ public class BaseFixture {
     public BaseFixture(UserFactory userFactory,
             CohortFactory cohortFactory,
             EnrollentFactory enrollmentFactory) {
-        System.out.println("Base fixture constructor called");
         this.userFactory = userFactory;
         this.cohortFactory = cohortFactory;
         this.enrollmentFactory = enrollmentFactory;
@@ -37,7 +36,7 @@ public class BaseFixture {
 
     @PostConstruct
     public void seedBaseData() {
-        System.out.println("Seeding from fixture");
+
         adminUser = userFactory.createAndPersist(
                 new UserFactoryOptions()
                         .role(Role.ADMIN)

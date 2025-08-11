@@ -44,6 +44,48 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
                 .get("/example/protected-route")
                 .then()
                 .statusCode(401);
+    }
+
+    @Test
+    void getAdminOnly_asAdmin_succeeds() {
+        RestAssured.given()
+                .spec(authenticatedRequest(getBaseFixture().adminUser))
+                .when()
+                .get("/example/admin-only")
+                .then()
+                .statusCode(200)
+                .body(equalTo("Only an admin can see this"));
+    }
+
+    @Test
+    void getAdminOnly_asCoach_fails() {
+        RestAssured.given()
+                .spec(authenticatedRequest(getBaseFixture().coachUser))
+                .when()
+                .get("/example/admin-only")
+                .then()
+                .statusCode(403);
+    }
+
+    @Test
+    void postCsrf_withCsrf_succeeds() {
+        RestAssured.given()
+                .spec(authenticatedRequestWithCsrf(getBaseFixture().adminUser))
+                .when()
+                .post("/example/protected-route")
+                .then()
+                .statusCode(200)
+                .body(equalTo("This should be protected by CSRF"));
+    }
+
+    @Test
+    void postCsrf_witouthCsrf_fails() {
+        RestAssured.given()
+                .spec(authenticatedRequest(getBaseFixture().adminUser))
+                .when()
+                .post("/example/protected-route")
+                .then()
+                .statusCode(403);
 
     }
 }

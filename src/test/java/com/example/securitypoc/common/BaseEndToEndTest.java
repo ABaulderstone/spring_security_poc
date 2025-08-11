@@ -50,9 +50,7 @@ public abstract class BaseEndToEndTest {
 
     protected RequestSpecification authenticatedRequest(User user) {
         String jwt = jwtUtils.generateJwt(user);
-        System.out.println("*JWT*");
-        System.out.println(jwt);
-        System.out.println("*JWT*");
+
         return new RequestSpecBuilder()
                 .setBaseUri("http://localhost")
                 .setPort(port)
