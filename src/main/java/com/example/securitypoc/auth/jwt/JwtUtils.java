@@ -31,14 +31,12 @@ public class JwtUtils {
     public String generateJwt(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User user = userDetails.getUser();
-        return Jwts.builder()
-                .setSubject(user.getId().toString())
-                .claim("role", user.getRole())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
-                .signWith(getKey(), SignatureAlgorithm.HS512)
-                .compact();
+        return buildJwtFromUser(user);
 
+    }
+
+    public String generateJwt(User user) {
+        return buildJwtFromUser(user);
     }
 
     public boolean validateJwt(String token) {
@@ -79,6 +77,16 @@ public class JwtUtils {
 
     private Key getKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private String buildJwtFromUser(User user) {
+        return Jwts.builder()
+                .setSubject(user.getId().toString())
+                .claim("role", user.getRole())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(getKey(), SignatureAlgorithm.HS512)
+                .compact();
     }
 
     public record JwtUserInfo(Long userId, String role) {
