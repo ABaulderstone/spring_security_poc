@@ -35,4 +35,15 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
                 .statusCode(200)
                 .body(equalTo("You can only access this with the right credentials"));
     }
+
+    @Test
+    void getProtectedRoute_unauthenticated_fails() {
+        RestAssured.given()
+                .spec(anonymousRequest())
+                .when()
+                .get("/example/protected-route")
+                .then()
+                .statusCode(401);
+
+    }
 }
