@@ -40,58 +40,7 @@ public abstract class BaseEndToEndTest {
         return baseFixture;
     }
 
-    protected RequestSpecification anonymousRequest() {
-        return new RequestSpecBuilder()
-                .setBaseUri("http://localhost")
-                .setPort(port)
-                .setContentType(ContentType.JSON)
-                .build();
+    protected RequestConfigurator spec() {
+        return new RequestConfigurator("http://localhost", port, jwtUtils);
     }
-
-    protected RequestSpecification authenticatedRequest(User user) {
-        String jwt = jwtUtils.generateJwt(user);
-
-        return new RequestSpecBuilder()
-                .setBaseUri("http://localhost")
-                .setPort(port)
-                .addCookie("jwt", jwt)
-                .setContentType(ContentType.JSON)
-                .build();
-    }
-
-    protected RequestSpecification authenticatedRequestWithCsrf(User user) {
-        String jwt = jwtUtils.generateJwt(user);
-
-        // need to repeat this so we can add the JWT again
-        RequestSpecification baseSpec = new RequestSpecBuilder()
-                .setBaseUri("http://localhost")
-                .setPort(port)
-                .addCookie("jwt", jwt)
-                .setContentType(ContentType.JSON)
-                .build();
-
-        Response csrfResponse = fetchCsrfToken(baseSpec);
-        String csrfToken = csrfResponse.path("token");
-        String csrfCookie = csrfResponse.getCookie("XSRF-TOKEN");
-
-        return new RequestSpecBuilder()
-                .setBaseUri("http://localhost")
-                .setPort(port)
-                .addCookie("jwt", jwt)
-                .addCookie("XSRF-TOKEN", csrfCookie)
-                .addHeader("X-XSRF-TOKEN", csrfToken)
-                .setContentType(ContentType.JSON)
-                .build();
-    }
-
-    private Response fetchCsrfToken(RequestSpecification spec) {
-        return RestAssured.given()
-                .spec(spec)
-                .get("/csrf/csrf-token")
-                .then()
-                .statusCode(200)
-                .extract()
-                .response();
-    }
-
 }

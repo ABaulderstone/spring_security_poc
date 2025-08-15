@@ -1,22 +1,14 @@
 package com.example.securitypoc.example;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
 import com.example.securitypoc.auth.jwt.JwtUtils;
 import com.example.securitypoc.common.BaseEndToEndTest;
 import com.example.securitypoc.common.BaseFixture;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-
 import static org.hamcrest.Matchers.*;
-
-import java.util.Arrays;
 
 public class ExampleEndtoEndTest extends BaseEndToEndTest {
 
@@ -27,8 +19,9 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
 
     @Test
     void getProtectedRoute_authenticated_succeeds() {
-        RestAssured.given()
-                .spec(authenticatedRequest(getBaseFixture().adminUser))
+        spec()
+                .withJwt(getBaseFixture().adminUser)
+                .build()
                 .when()
                 .get("/example/protected-route")
                 .then()
@@ -38,8 +31,8 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
 
     @Test
     void getProtectedRoute_unauthenticated_fails() {
-        RestAssured.given()
-                .spec(anonymousRequest())
+        spec()
+                .build()
                 .when()
                 .get("/example/protected-route")
                 .then()
@@ -48,8 +41,10 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
 
     @Test
     void getAdminOnly_asAdmin_succeeds() {
-        RestAssured.given()
-                .spec(authenticatedRequest(getBaseFixture().adminUser))
+
+        spec()
+                .withJwt(getBaseFixture().adminUser)
+                .build()
                 .when()
                 .get("/example/admin-only")
                 .then()
@@ -59,8 +54,9 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
 
     @Test
     void getAdminOnly_asCoach_fails() {
-        RestAssured.given()
-                .spec(authenticatedRequest(getBaseFixture().coachUser))
+        spec()
+                .withJwt(getBaseFixture().coachUser)
+                .build()
                 .when()
                 .get("/example/admin-only")
                 .then()
@@ -69,8 +65,10 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
 
     @Test
     void postCsrf_withCsrf_succeeds() {
-        RestAssured.given()
-                .spec(authenticatedRequestWithCsrf(getBaseFixture().adminUser))
+        spec()
+                .withJwt(getBaseFixture().adminUser)
+                .withCsrf()
+                .build()
                 .when()
                 .post("/example/protected-route")
                 .then()
@@ -80,8 +78,9 @@ public class ExampleEndtoEndTest extends BaseEndToEndTest {
 
     @Test
     void postCsrf_witouthCsrf_fails() {
-        RestAssured.given()
-                .spec(authenticatedRequest(getBaseFixture().adminUser))
+        spec()
+                .withJwt(getBaseFixture().adminUser)
+                .build()
                 .when()
                 .post("/example/protected-route")
                 .then()
