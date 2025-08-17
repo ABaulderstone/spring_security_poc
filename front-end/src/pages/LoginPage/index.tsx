@@ -2,17 +2,29 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { schema, type LoginFormData } from './validation';
 import { useAuth } from '../../context/auth/use-auth';
 import Paper from '../../components/Paper';
 import Button from '../../components/Button';
+import Form from '../../components/Form';
+
+import { z } from 'zod';
+
+export const schema = z.object({
+  email: z.email(),
+  password: z.string().min(1),
+});
+
+export type LoginFormData = z.infer<typeof schema>;
 
 export default function LoginPage() {
-  const { handleSubmit, register, formState } = useForm<LoginFormData>({
+  const methods = useForm<LoginFormData>({
     resolver: zodResolver(schema),
   });
 
-  const { errors } = formState;
+  const {
+    formState: { errors },
+    register,
+  } = methods;
   const [loginError, setLoginError] = useState<string | null>(null);
   const { login } = useAuth();
   const location = useLocation();
@@ -42,41 +54,30 @@ export default function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Email
-            </label>
-            <input
+        <Form methods={methods} onSubmit={onSubmit}>
+          <Form.Field name="email" label="Email" error={errors.email?.message}>
+            <Form.Input
               type="email"
-              {...register('email')}
-              className={`w-full px-4 py-2 rounded-md border bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.email ? 'border-red-500' : ''
-              }`}
+              register={register}
+              name="email"
+              placeholder="Enter email"
             />
-            {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
-            )}
-          </div>
+          </Form.Field>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Password
-            </label>
-            <input
+          <Form.Field
+            name="password"
+            label="Password"
+            error={errors.password?.message}
+          >
+            <Form.Input
               type="password"
-              {...register('password')}
-              className={`w-full px-4 py-2 rounded-md border bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.password ? 'border-red-500' : ''
-              }`}
+              register={register}
+              name="password"
+              placeholder="Enter password"
             />
-            {errors.password && (
-              <p className="text-sm text-red-600">{errors.password.message}</p>
-            )}
-          </div>
-
+          </Form.Field>
           <Button type="submit">Login</Button>
-        </form>
+        </Form>
       </Paper>
     </div>
   );
